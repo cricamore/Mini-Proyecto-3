@@ -3,6 +3,7 @@ package myProject;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * This class is used for ...
  * @autor Paola-J Rodriguez-C paola.rodriguez@correounivalle.edu.co
@@ -11,9 +12,11 @@ import java.awt.*;
 public class GUI extends JFrame {
 
     private Header headerProject;
-    private TableroPosicion tableroPosicion;
+    private AreasDeJuego jugador, oponente;
     private TableroPrincipal tableroPrincipal;
-    private static final String EAST_IMG_PATH = "src/resources/agua.jpeg/";
+    private ImageIcon image;
+    private static final String PATH = "resources/agua.jpeg/";
+
 
     /**
      * Constructor of GUI class
@@ -23,12 +26,14 @@ public class GUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
-        //this.setSize(200,100);
-        this.pack();
+        this.setSize(850,450);
+        //this.pack();
         this.setResizable(true);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
     }
 
     /**
@@ -42,13 +47,16 @@ public class GUI extends JFrame {
         headerProject = new Header("BATALLA NAVAL", Color.BLACK);
 
         this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
-        String eastImgString = EAST_IMG_PATH;
-        T
+        image = new ImageIcon(getClass().getResource(PATH));
+
+        JLabel tableroPosicion = new JLabel("Tablero Posicion");
+
+        jugador = new AreasDeJuego(image, 36);
+        add(jugador, BorderLayout.WEST);
 
 
-        tableroPrincipal = new TableroPrincipal();
-        add(tableroPrincipal,BorderLayout.EAST);
-        tableroPrincipal.setLayout(null);
+        oponente = new AreasDeJuego(image, 36);
+        add(oponente, BorderLayout.EAST);
 
 
 
