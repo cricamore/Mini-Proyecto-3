@@ -2,6 +2,7 @@ package myProject;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 
 /**
@@ -15,6 +16,7 @@ public class GUI extends JFrame {
     private AreasDeJuego jugador, oponente;
     private TableroPrincipal tableroPrincipal;
     private ImageIcon image;
+    private Escucha escucha;
     private static final String PATH = "resources/agua.jpeg/";
 
 
@@ -26,8 +28,8 @@ public class GUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
-        this.setSize(850,450);
-        //this.pack();
+        //this.setSize(850,450);
+        this.pack();
         this.setResizable(true);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
@@ -51,12 +53,8 @@ public class GUI extends JFrame {
 
         JLabel tableroPosicion = new JLabel("Tablero Posicion");
 
-        jugador = new AreasDeJuego(image, 36);
-        add(jugador, BorderLayout.WEST);
-
-
-        oponente = new AreasDeJuego(image, 36);
-        add(oponente, BorderLayout.EAST);
+        jugador = new AreasDeJuego();
+        add(jugador, BorderLayout.CENTER);
 
 
 
@@ -69,15 +67,22 @@ public class GUI extends JFrame {
      *             the program is execute by console.
      */
     public static void main(String[] args){
-        EventQueue.invokeLater(() -> {
-            GUI miProjectGUI = new GUI();
+        java.awt.EventQueue.invokeLater(new Runnable(){
+            @Override
+            public void run() {
+                GUI miProjectGUI = new GUI();
+            }
         });
     }
 
     /**
      * inner class that extends an Adapter Class or implements Listeners used by GUI class
      */
-    private class Escucha {
+    private class Escucha implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+        }
     }
 }
