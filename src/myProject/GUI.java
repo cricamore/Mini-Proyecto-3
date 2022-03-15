@@ -17,6 +17,7 @@ public class GUI extends JFrame {
     private TableroPrincipal tableroPrincipal;
     private ImageIcon image;
     private Escucha escucha;
+    private JButton mostrar;
     private static final String PATH = "resources/agua.jpeg/";
 
 
@@ -53,9 +54,16 @@ public class GUI extends JFrame {
 
         JLabel tableroPosicion = new JLabel("Tablero Posicion");
 
+
         jugador = new AreasDeJuego();
         add(jugador, BorderLayout.CENTER);
+        jugador.setLayout(null);
+        jugador.iniciarPartida();
 
+
+        mostrar = new JButton("Visualizar");
+        jugador.add(mostrar);
+        mostrar.setBounds(702,460,100,30);
 
 
 
@@ -67,11 +75,8 @@ public class GUI extends JFrame {
      *             the program is execute by console.
      */
     public static void main(String[] args){
-        java.awt.EventQueue.invokeLater(new Runnable(){
-            @Override
-            public void run() {
-                GUI miProjectGUI = new GUI();
-            }
+        EventQueue.invokeLater(() -> {
+            GUI miProjectGUI = new GUI();
         });
     }
 

@@ -11,11 +11,9 @@ import java.util.*;
 
 public class AreasDeJuego extends JPanel{
     private int estado;
-    public static final String MOUSE_PRESSED = "Mouse Pressed";
-    private JTextArea textArea;
-    private String selectedCellName;
-    private JLabel selectedLabel;
+    private boolean rodar;
     private int tableroPosicion[][] = new int[10][10];
+    private boolean bTableroPosicion[][] = new boolean[10][10];
     private int tableroPrincipal[][] = new int[10][10];
 
     private int pFila=0;
@@ -27,23 +25,6 @@ public class AreasDeJuego extends JPanel{
     public AreasDeJuego(){
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
         setPreferredSize(new Dimension(1000, 500));
-
-        for (int i=0;i<10;i++){
-            for (int j=0;j<10;j++){
-                tableroPosicion[i][j]=0;
-                tableroPrincipal[i][j]=0;
-            }
-        }
-
-        ubicarNave(tableroPrincipal,1);
-        ubicarNave(tableroPrincipal,1);
-        ubicarNave(tableroPrincipal,1);
-        ubicarNave(tableroPrincipal,2);
-        ubicarNave(tableroPrincipal,2);
-        ubicarNave(tableroPrincipal,2);
-        ubicarNave(tableroPrincipal,3);
-        ubicarNave(tableroPrincipal,3);
-        ubicarNave(tableroPrincipal,4);
 
         addMouseMotionListener(
                 new MouseMotionAdapter() {
@@ -58,29 +39,18 @@ public class AreasDeJuego extends JPanel{
                             if (fila != pFila || columna != pColumna) {
                                 pFila = fila;
                                 pColumna = columna;
+                                rectificarUbicacionNave();
                                 repaint();
                             }
+
                         }
                     }
                 });
-    }
-
-    @Override
-    protected void paintComponent(Graphics g){
-        if(estado==0) {
-            g.setFont(new Font(Font.DIALOG,Font.BOLD,17));
-            g.setColor(Color.BLACK);
-            g.drawString("Tablero Posicion", 50, 35);
-
-            g.setFont(new Font(Font.DIALOG,Font.BOLD,17));
-            g.setColor(Color.BLACK);
-            g.drawString("Tablero Principal", 550, 35);
-
-            pintarTablero(g, tableroPosicion, 50, 50);
-            pintarTablero(g, tableroPrincipal, 550, 50);
-        }
 
     }
+
+
+
 
     public boolean casillaEnTablero(int fila, int columna){
         if(fila<0) return false;
@@ -130,17 +100,33 @@ public class AreasDeJuego extends JPanel{
         }
     }
 
+    public void rectificarUbicacionNave(){
+        int pDFila=0;
+        int pDColumna=0;
+        if(pHorizontal==1){
+            pDFila=1;
+        }else {
+            pDColumna=1;
+        }
+        if(pFila+pTamano*pDFila>=10){
+            pFila=9-pTamano*pDFila;
+        }
+        if(pColumna+pTamano*pDColumna>=10){
+            pColumna=9-pTamano*pDColumna;
+        }
+    }
+
     public void pintarTablero(Graphics g, int tablero[][], int x, int y){
         for (int i=0;i<10;i++){
             for (int j=0;j<10;j++){
                 if(tablero[i][j]> 0){
                     g.setColor(Color.RED);
-                    g.fillRect(x+i*40,y+j*40,40,40);
+                    g.fillRect(x+j*40,y+i*40,40,40);
                 }
                 g.setColor(Color.BLACK);
-                g.drawRect(x+i*40,y+j*40,40,40);
+                g.drawRect(x+j*40,y+i*40,40,40);
 
-                if(estado == 0 && tablero==tableroPosicion) {
+                if(tablero==tableroPosicion) {
                     int pDFila = 0;
                     int pDColumna = 0;
                     if (pHorizontal == 1) {
@@ -149,21 +135,62 @@ public class AreasDeJuego extends JPanel{
                         pDColumna = 1;
                     }
                     if (i >= pFila && j >= pColumna && i <= pFila + pTamano * pDFila && j <= pColumna + pTamano * pDColumna) {
-                        g.setColor(Color.GREEN);
-                        g.fillRect(x + i * 40, y + j * 40, 40, 40);
+                        g.setColor(Color.green);
+                        g.fillRect(x + j * 40, y + i * 40, 40, 40);
                     }
                 }
             }
         }
     }
 
+    @Override
+    protected void paintComponent(Graphics g){
+        if(estado==0) {
+            g.setFont(new Font(Font.DIALOG,Font.BOLD,17));
+            g.setColor(Color.BLACK);
+            g.drawString("Tablero Posicion", 50, 35);
+
+            g.setFont(new Font(Font.DIALOG,Font.BOLD,17));
+            g.setColor(Color.BLACK);
+            g.drawString("Tablero Principal", 550, 35);
+
+
+            pintarTablero(g, tableroPosicion, 50, 50);
+            pintarTablero(g, tableroPrincipal, 550, 50);
+
+        }
+
+    }
+
     public int getEstado() {
         return estado;
+    }
+
+    public void iniciarPartida(){
+
+        for (int i=0;i<10;i++){
+            for (int j=0;j<10;j++){
+                tableroPosicion[i][j]=0;
+                tableroPrincipal[i][j]=0;
+                bTableroPosicion[i][j]=false;
+            }
+        }
+        ubicarNave(tableroPrincipal,1);
+        ubicarNave(tableroPrincipal,1);
+        ubicarNave(tableroPrincipal,1);
+        ubicarNave(tableroPrincipal,2);
+        ubicarNave(tableroPrincipal,2);
+        ubicarNave(tableroPrincipal,2);
+        ubicarNave(tableroPrincipal,3);
+        ubicarNave(tableroPrincipal,3);
+        ubicarNave(tableroPrincipal,4);
     }
 
     public int getPFila() {
         return pFila;
     }
+
+
 
     public int getPColumna(){
         return pColumna;
