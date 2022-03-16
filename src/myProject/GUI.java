@@ -29,7 +29,7 @@ public class GUI extends JFrame {
 
         //Default JFrame configuration
         this.setTitle("Batalla Naval");
-        //this.setSize(850,450);
+        //this.setSize(1000,600);
         this.pack();
         this.setResizable(true);
         this.setVisible(true);
@@ -50,25 +50,14 @@ public class GUI extends JFrame {
         headerProject = new Header("BATALLA NAVAL", Color.BLACK);
 
         this.add(headerProject,BorderLayout.NORTH); //Change this line if you change JFrame Container's Layout
-        image = new ImageIcon(getClass().getResource(PATH));
-
-        JLabel tableroPosicion = new JLabel("Tablero Posicion");
-
-        Thread jugar = new Thread(new AreasDeJuego());
-        jugar.start();
-
 
 
         jugador = new AreasDeJuego();
         add(jugador, BorderLayout.SOUTH);
         jugador.setLayout(null);
-        jugador.iniciarPartida();
-        jugador.revalidate();
-
-
 
         mostrar = new JButton("Visualizar");
-        jugador.add(mostrar);
+        //jugador.add(mostrar);
         mostrar.setBounds(702,460,100,30);
 
 
@@ -82,8 +71,11 @@ public class GUI extends JFrame {
      *             the program is execute by console.
      */
     public static void main(String[] args){
-        EventQueue.invokeLater(() -> {
-            GUI miProjectGUI = new GUI();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new GUI().setVisible(true);
+            }
         });
     }
 
@@ -95,9 +87,6 @@ public class GUI extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(e.getSource()==iniciar){
-                jugador.setVisible(true);
-            }
 
         }
     }
