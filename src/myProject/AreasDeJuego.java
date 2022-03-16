@@ -9,13 +9,15 @@ import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-public class AreasDeJuego extends JPanel{
+
+public class AreasDeJuego extends JPanel implements Runnable{
     private int estado;
     private boolean rodar;
     private int tableroPosicion[][] = new int[10][10];
     private boolean bTableroPosicion[][] = new boolean[10][10];
     private int tableroPrincipal[][] = new int[10][10];
 
+    ImageIcon agua;
     private int pFila=0;
     private int pColumna=0;
     private int pTamano=5;
@@ -23,9 +25,33 @@ public class AreasDeJuego extends JPanel{
 
 
     public AreasDeJuego(){
-        setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        setPreferredSize(new Dimension(1000, 500));
 
+        ImageIcon i = new ImageIcon() {
+        };
+        agua = new ImageIcon(getClass().getResource("resources/water.jpg"));
+
+        setPreferredSize(new Dimension(1000,500));
+
+
+        addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent e) {
+                        int pDFila = 0;
+                        int pDColumna = 0;
+                        if (pHorizontal == 1) {
+                            pDFila = 1;
+                        } else {
+                            pDColumna = 1;
+                        }
+                        for(int m=pFila;m<=pFila+pTamano*pDFila;m++) {
+                            for(int n=pColumna;n<=pColumna+pTamano*pDColumna;n++) {
+                                tableroPosicion[n][m]=pTamano;
+                            }
+                        }
+                    }
+                }
+        );
         addMouseMotionListener(
                 new MouseMotionAdapter() {
                     @Override
@@ -39,7 +65,19 @@ public class AreasDeJuego extends JPanel{
                             if (fila != pFila || columna != pColumna) {
                                 pFila = fila;
                                 pColumna = columna;
-                                rectificarUbicacionNave();
+                                int pDFila=0;
+                                int pDColumna=0;
+                                if(pHorizontal==1){
+                                    pDFila=1;
+                                }else {
+                                    pDColumna=1;
+                                }
+                                if(pFila+pTamano*pDFila>=10){
+                                    pFila=10-pTamano*pDFila;
+                                }
+                                if(pColumna+pTamano*pDColumna>=10){
+                                    pColumna=10-pTamano*pDColumna;
+                                }
                                 repaint();
                             }
 
@@ -135,16 +173,16 @@ public class AreasDeJuego extends JPanel{
                         pDColumna = 1;
                     }
                     if (i >= pFila && j >= pColumna && i <= pFila + pTamano * pDFila && j <= pColumna + pTamano * pDColumna) {
-                        g.setColor(Color.green);
-                        g.fillRect(x + j * 40, y + i * 40, 40, 40);
+                        g.setColor(Color.GREEN);
+                        g.fillRect(x+j*40,y+i*40,40,40);
                     }
                 }
             }
         }
     }
 
-    @Override
-    protected void paintComponent(Graphics g){
+
+    public void paint(Graphics g){
         if(estado==0) {
             g.setFont(new Font(Font.DIALOG,Font.BOLD,17));
             g.setColor(Color.BLACK);
@@ -154,7 +192,8 @@ public class AreasDeJuego extends JPanel{
             g.setColor(Color.BLACK);
             g.drawString("Tablero Principal", 550, 35);
 
-
+            g.drawImage(agua.getImage(),0,0,this);
+            g.setColor(Color.RED);
             pintarTablero(g, tableroPosicion, 50, 50);
             pintarTablero(g, tableroPrincipal, 550, 50);
 
@@ -184,6 +223,8 @@ public class AreasDeJuego extends JPanel{
         ubicarNave(tableroPrincipal,3);
         ubicarNave(tableroPrincipal,3);
         ubicarNave(tableroPrincipal,4);
+
+
     }
 
     public int getPFila() {
@@ -194,5 +235,18 @@ public class AreasDeJuego extends JPanel{
 
     public int getPColumna(){
         return pColumna;
+    }
+
+    public static void main(String args[]) {
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AreasDeJuego().setVisible(true);
+            }
+        });
+    }
+
+    @Override
+    public void run() {
+
     }
 }

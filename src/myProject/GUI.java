@@ -13,11 +13,11 @@ import java.awt.event.*;
 public class GUI extends JFrame {
 
     private Header headerProject;
-    private AreasDeJuego jugador, oponente;
+    private AreasDeJuego jugador;
     private TableroPrincipal tableroPrincipal;
     private ImageIcon image;
     private Escucha escucha;
-    private JButton mostrar;
+    private JButton mostrar, iniciar;
     private static final String PATH = "resources/agua.jpeg/";
 
 
@@ -54,16 +54,23 @@ public class GUI extends JFrame {
 
         JLabel tableroPosicion = new JLabel("Tablero Posicion");
 
+        Thread jugar = new Thread(new AreasDeJuego());
+        jugar.start();
+
+
 
         jugador = new AreasDeJuego();
-        add(jugador, BorderLayout.CENTER);
+        add(jugador, BorderLayout.SOUTH);
         jugador.setLayout(null);
         jugador.iniciarPartida();
+        jugador.revalidate();
+
 
 
         mostrar = new JButton("Visualizar");
         jugador.add(mostrar);
         mostrar.setBounds(702,460,100,30);
+
 
 
 
@@ -85,8 +92,12 @@ public class GUI extends JFrame {
      */
     private class Escucha implements ActionListener {
 
+
         @Override
         public void actionPerformed(ActionEvent e) {
+            if(e.getSource()==iniciar){
+                jugador.setVisible(true);
+            }
 
         }
     }
