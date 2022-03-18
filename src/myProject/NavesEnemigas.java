@@ -2,6 +2,12 @@ package myProject;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class NavesEnemigas es encarga de proyectar la ejecución del juego.
+ * @author Cristian Montaño 202024223
+ * @author Maicol Montenegro 202026993
+ * @version v.1.0.0 date 17/03/2022
+ */
 public class NavesEnemigas extends JFrame implements Runnable {
 
     private JPanel panel;
