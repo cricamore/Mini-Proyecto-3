@@ -41,7 +41,7 @@ public class GUI extends JFrame {
         this.setTitle("Batalla Naval");
         //this.setSize(1000,600);
         this.pack();
-        this.setResizable(true);
+        this.setResizable(false);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
